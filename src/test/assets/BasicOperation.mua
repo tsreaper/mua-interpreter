@@ -1,0 +1,12 @@
+make "a 10
+print :a
+make "b "a
+print thing :b
+make "c read
+make "d add 6 mul 7 2
+make "e [make "f 6]
+make "g readlinst
+print thing "e
+print :c
+print :d
+print :g
