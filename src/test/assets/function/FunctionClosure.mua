@@ -1,0 +1,10 @@
+make "outer_function [["a] [
+    make "a add :a 1
+    make "inner_function [["b] [
+        make "b add :a :b
+        output mul :a :b
+    ]]
+    output inner_function read
+]]
+
+print outer_function read

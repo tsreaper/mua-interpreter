@@ -1,14 +1,16 @@
 package lang.namespace;
 
-import lang.element.MuaElement;
 import exception.operation.InvalidNameException;
+import lang.element.MuaElement;
 
 import java.util.HashMap;
 
 class Namespace {
+    MuaElement returnValue;
     private HashMap<String, MuaElement> wordMap;
 
     Namespace() {
+        returnValue = null;
         wordMap = new HashMap<>();
     }
 

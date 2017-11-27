@@ -1,18 +1,21 @@
-package interpretation;
+package interpreter;
 
+import service.scanner.IScannerServiceProvider;
 import util.Util;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class MuaScanner {
-    static private Scanner scanner = new Scanner(System.in);
-    static private ArrayList<String> tokens = new ArrayList<>();
+public class MuaScanner implements IScannerServiceProvider {
+    private Scanner scanner;
+    private ArrayList<String> tokens;
 
-    private MuaScanner() {
+    public MuaScanner() {
+        scanner = new Scanner(System.in);
+        tokens = new ArrayList<>();
     }
 
-    static public String next() {
+    public String next() {
         String token;
         while (true) {
             if (tokens.size() > 0) {
@@ -27,7 +30,7 @@ public class MuaScanner {
         return token;
     }
 
-    static public String nextLine() {
+    public String nextLine() {
         while (tokens.size() > 0 && tokens.get(0).equals("\n")) {
             tokens.remove(0);
         }
@@ -48,12 +51,7 @@ public class MuaScanner {
         return ret.toString();
     }
 
-    static public void clear() {
-        scanner = new Scanner(System.in);
-        tokens.clear();
-    }
-
-    static private void read() {
+    private void read() {
         String line = scanner.nextLine();
         if (line.length() > 0) {
             tokens.addAll(Util.splitStringToArrayList(line));

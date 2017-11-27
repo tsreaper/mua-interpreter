@@ -1,8 +1,7 @@
 package lang.operation.control;
 
 import exception.MuaException;
-import interpretation.Interpreter;
-import interpretation.MuaRunner;
+import interpreter.MuaRunner;
 import lang.element.MuaElement;
 import lang.element.MuaList;
 import lang.operation.Operation;
@@ -27,9 +26,13 @@ public class OpRepeat extends Operation {
 
         for (int i = 0; i < repeatTimes; i++) {
             for (int j = 0; j < b.size(); j++) {
-                runner.run(b.get(j), Interpreter.isInteractive);
+                runner.add(b.get(j));
             }
-            runner.finishedThrowException();
+            runner.run(false);
+
+            if (runner.shouldStop()) {
+                break;
+            }
         }
 
         return null;

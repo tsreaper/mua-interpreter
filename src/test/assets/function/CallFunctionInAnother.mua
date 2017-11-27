@@ -1,0 +1,9 @@
+make "sum_of_a_b_c_d_e [["a "b "c "d "e] [
+    output add :a add :b add :c add :d :e
+]]
+
+make "calc_a_times_5_plus_b_times_5 [["a "b] [
+    output add sum_of_a_b_c_d_e :a :a :a :a :a sum_of_a_b_c_d_e :b :b :b :b :b
+]]
+
+print calc_a_times_5_plus_b_times_5 3 4

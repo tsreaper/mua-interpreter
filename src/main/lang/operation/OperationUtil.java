@@ -1,13 +1,17 @@
 package lang.operation;
 
-import exception.operation.NoSuchOperationException;
+import exception.operation.NoSuchFunctionException;
+import lang.element.MuaElement;
+import lang.element.MuaList;
 import lang.element.MuaWord;
 import lang.operation.arithmetic.*;
 import lang.operation.comparison.*;
-import lang.operation.control.OpRepeat;
+import lang.operation.control.*;
+import lang.operation.function.*;
 import lang.operation.io.*;
 import lang.operation.logic.*;
 import lang.operation.namespace.*;
+import service.namespace.NamespaceService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +23,8 @@ public class OperationUtil {
             "add", "sub", "mul", "div", "mod",
             "eq", "gt", "lt",
             "and", "or", "not",
-            "repeat"
+            "repeat", "stop",
+            "output"
     );
 
     private OperationUtil() {
@@ -34,7 +39,34 @@ public class OperationUtil {
         return OPERATIONS.contains(value);
     }
 
-    static public Operation getOperation(String value) throws NoSuchOperationException {
+    static public OpFunction getFunction(String value) throws NoSuchFunctionException {
+        // Check if the given name is a function
+        if (!NamespaceService.getService().isName(value)) {
+            throw new NoSuchFunctionException(value);
+        }
+
+        MuaElement element = NamespaceService.getService().getBoundedElement(value);
+        if (!(element instanceof MuaList)) {
+            throw new NoSuchFunctionException(value);
+        }
+
+        MuaList list = (MuaList) element;
+        if (list.size() != 2 || !(list.get(0) instanceof MuaList) || !(list.get(1) instanceof MuaList)) {
+            throw new NoSuchFunctionException(value);
+        }
+
+        MuaList params = (MuaList) list.get(0);
+        for (int i = 0; i < params.size(); i++) {
+            if (!(params.get(i) instanceof MuaWord)) {
+                throw new NoSuchFunctionException(value);
+            }
+        }
+
+        // It's a function. Return OpFunction
+        return new OpFunction(value, params, (MuaList) list.get(1));
+    }
+
+    static public Operation getOperation(String value) {
         switch (value) {
             // Namespace operation
             case "make":
@@ -85,17 +117,20 @@ public class OperationUtil {
             // Control operation
             case "repeat":
                 return new OpRepeat();
+            case "stop":
+                return new OpStop();
 
+            // Function operation
+            case "output":
+                return new OpOutput();
+
+            // Must be : operation
             default:
-                // Check for : operation
-                if (value.charAt(0) == ':') {
-                    Operation op = new OpThing();
-                    op.addOperand(new MuaWord(value.substring(1)));
-                    return op;
-                }
+                assert value.charAt(0) == ':';
 
-                // No such operation
-                throw new NoSuchOperationException(value);
+                Operation op = new OpThing();
+                op.addOperand(new MuaWord(value.substring(1)));
+                return op;
         }
     }
 }

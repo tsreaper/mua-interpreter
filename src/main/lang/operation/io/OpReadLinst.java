@@ -1,11 +1,11 @@
 package lang.operation.io;
 
 import exception.element.UnclosedListException;
-import interpretation.MuaScanner;
-import interpretation.Tokenizer;
+import interpreter.Tokenizer;
 import lang.element.MuaElement;
 import lang.element.MuaList;
 import lang.operation.Operation;
+import service.scanner.ScannerService;
 
 public class OpReadLinst extends Operation {
     public OpReadLinst() {
@@ -18,7 +18,7 @@ public class OpReadLinst extends Operation {
     public MuaElement execute() throws UnclosedListException {
         checkOperandNum();
 
-        String line = MuaScanner.nextLine();
+        String line = ScannerService.getService().nextLine();
         Tokenizer tokenizer = new Tokenizer(false);
         tokenizer.tokenize(line);
 

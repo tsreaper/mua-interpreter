@@ -1,11 +1,11 @@
 package lang.operation.io;
 
 import exception.element.InvalidNumberException;
-import interpretation.MuaScanner;
 import lang.element.MuaElement;
 import lang.element.MuaNumber;
 import lang.element.MuaWord;
 import lang.operation.Operation;
+import service.scanner.ScannerService;
 
 public class OpRead extends Operation {
     public OpRead() {
@@ -18,7 +18,7 @@ public class OpRead extends Operation {
     public MuaElement execute() {
         checkOperandNum();
 
-        String token = MuaScanner.next();
+        String token = ScannerService.getService().next();
 
         try {
             return new MuaNumber(token);

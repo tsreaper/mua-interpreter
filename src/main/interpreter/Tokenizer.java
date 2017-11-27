@@ -1,7 +1,6 @@
-package interpretation;
+package interpreter;
 
 import exception.element.UnclosedListException;
-import exception.operation.NoSuchOperationException;
 import lang.element.*;
 import util.Util;
 
@@ -38,7 +37,7 @@ public class Tokenizer {
         muaLists.clear();
     }
 
-    public void tokenize(String line) throws UnclosedListException, NoSuchOperationException {
+    public void tokenize(String line) throws UnclosedListException {
         // Split string
         String[] strArr = Util.splitStringToArray(line);
 

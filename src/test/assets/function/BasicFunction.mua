@@ -1,0 +1,13 @@
+make "a_squared_plus_b [["a "b] [
+    make "c mul :a :a
+    make "c add :c :b
+    output :c
+]]
+
+make "a_plus_b_with_stop [["a "b] [
+    output add :a :b
+    stop
+    print "Should'nt_print_this
+]]
+
+print a_squared_plus_b a_plus_b_with_stop 3 4 5

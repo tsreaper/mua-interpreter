@@ -3,8 +3,8 @@ package lang.operation.namespace;
 import exception.operation.OperandTypeException;
 import lang.element.MuaBool;
 import lang.element.MuaElement;
-import lang.namespace.NamespaceManager;
 import lang.operation.Operation;
+import service.namespace.NamespaceService;
 
 public class OpIsName extends Operation {
     public OpIsName() {
@@ -19,6 +19,6 @@ public class OpIsName extends Operation {
 
         MuaElement a = getOperand(0, "word");
 
-        return new MuaBool(NamespaceManager.isName(a.getValue()));
+        return new MuaBool(NamespaceService.getService().isName(a.getValue()));
     }
 }

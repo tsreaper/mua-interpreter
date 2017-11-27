@@ -2,8 +2,8 @@ package lang.operation.namespace;
 
 import exception.operation.OperandTypeException;
 import lang.element.MuaElement;
-import lang.namespace.NamespaceManager;
 import lang.operation.Operation;
+import service.namespace.NamespaceService;
 
 public class OpErase extends Operation {
     public OpErase() {
@@ -17,7 +17,7 @@ public class OpErase extends Operation {
         checkOperandNum();
 
         MuaElement a = getOperand(0, "word");
-        NamespaceManager.eraseBoundedElement(a.getValue());
+        NamespaceService.getService().eraseBoundedElement(a.getValue());
 
         return null;
     }

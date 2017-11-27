@@ -1,22 +1,27 @@
 package lang.namespace;
 
-import lang.element.MuaElement;
 import exception.operation.InvalidNameException;
+import lang.element.MuaElement;
+import service.namespace.INamespaceServiceProvider;
 
 import java.util.ArrayList;
 
-public class NamespaceManager {
-    static private ArrayList<Namespace> nsList = new ArrayList<>();
+public class NamespaceManager implements INamespaceServiceProvider {
+    private ArrayList<Namespace> nsList;
 
-    static public void addNamespace() {
+    public NamespaceManager() {
+        nsList = new ArrayList<>();
+    }
+
+    public void addNamespace() {
         nsList.add(new Namespace());
     }
 
-    static public void removeNamespace() {
-        nsList.remove(nsList.size() - 1);
+    public MuaElement removeNamespace() {
+        return nsList.remove(nsList.size() - 1).returnValue;
     }
 
-    static public MuaElement getBoundedElement(String key) throws InvalidNameException {
+    public MuaElement getBoundedElement(String key) throws InvalidNameException {
         for (int i = nsList.size() - 1; i >= 0; i--) {
             try {
                 return nsList.get(i).getBoundedElement(key);
@@ -26,11 +31,11 @@ public class NamespaceManager {
         throw new InvalidNameException(key);
     }
 
-    static public void bindElement(String key, MuaElement element) {
+    public void bindElement(String key, MuaElement element) {
         nsList.get(nsList.size() - 1).bindElement(key, element);
     }
 
-    static public boolean eraseBoundedElement(String key) {
+    public boolean eraseBoundedElement(String key) {
         for (int i = nsList.size() - 1; i >= 0; i--) {
             if (nsList.get(i).eraseBoundedElement(key)) {
                 return true;
@@ -39,12 +44,16 @@ public class NamespaceManager {
         return false;
     }
 
-    static public boolean isName(String key) {
+    public boolean isName(String key) {
         for (int i = nsList.size() - 1; i >= 0; i--) {
             if (nsList.get(i).isName(key)) {
                 return true;
             }
         }
         return false;
+    }
+
+    public void setReturnValue(MuaElement element) {
+        nsList.get(nsList.size() - 1).returnValue = element;
     }
 }

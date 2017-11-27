@@ -1,7 +1,5 @@
 package lang.operation.arithmetic;
 
-import lang.operation.arithmetic.ArithmeticOperation;
-
 public class OpSub extends ArithmeticOperation {
     public OpSub() {
         super();

@@ -3,8 +3,8 @@ package lang.operation.namespace;
 import exception.operation.InvalidNameException;
 import exception.operation.OperandTypeException;
 import lang.element.MuaElement;
-import lang.namespace.NamespaceManager;
 import lang.operation.Operation;
+import service.namespace.NamespaceService;
 
 public class OpThing extends Operation {
     public OpThing() {
@@ -18,10 +18,10 @@ public class OpThing extends Operation {
         checkOperandNum();
 
         MuaElement a = getOperand(0, "word");
-        if (!NamespaceManager.isName(a.getValue())) {
+        if (!NamespaceService.getService().isName(a.getValue())) {
             throw new InvalidNameException(a.getValue());
         }
 
-        return NamespaceManager.getBoundedElement(a.getValue());
+        return NamespaceService.getService().getBoundedElement(a.getValue());
     }
 }
