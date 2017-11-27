@@ -1,0 +1,8 @@
+repeat 10 [
+    make "a 1
+    make "b 2
+    print add :a :b
+    make "c add :a mul :b
+]
+
+print "Should't_print_this

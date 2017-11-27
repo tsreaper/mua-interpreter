@@ -1,0 +1,2 @@
+3.0
+OperandNumberException in line 6: Expecting 2 operands for operation `mul`, but found 1.

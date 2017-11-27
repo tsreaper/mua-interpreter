@@ -1,0 +1,14 @@
+make "a read
+make "ans 0
+
+make "rpt [
+    repeat :i [
+        make "ans add :ans 1
+    ]
+    make "i add :i 1
+]
+
+make "i 1
+repeat :a :rpt
+
+print :ans

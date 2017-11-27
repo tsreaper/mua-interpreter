@@ -7,4 +7,14 @@ class RepeatTest extends MuaTest {
     void BasicRepeat() {
         runTest(DIRECTORY + "BasicRepeat");
     }
+
+    @Test
+    void NestedRepeat() {
+        runTest(DIRECTORY + "NestedRepeat");
+    }
+
+    @Test
+    void OperandNumberExceptionRepeat() {
+        runTest(DIRECTORY + "OperandNumberExceptionRepeat");
+    }
 }

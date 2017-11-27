@@ -22,8 +22,8 @@ public class MuaRunner {
 
     public void finishedThrowException() throws OperandNumberException {
         if (operations.size() > 0) {
-            assert !operations.get(0).canExecute();
-            operations.get(0).execute();
+            assert !operations.get(operations.size() - 1).canExecute();
+            operations.get(operations.size() - 1).execute();
         }
     }
 
