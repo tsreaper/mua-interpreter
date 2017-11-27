@@ -1,10 +1,17 @@
 import org.junit.jupiter.api.Test;
 
 class SyntaxTest extends MuaTest {
-    private final String DIRECTORY = "syntax/";
+    SyntaxTest() {
+        DIRECTORY = "syntax/";
+    }
 
     @Test
     void UnfriendlySyntax() {
-        runTest(DIRECTORY + "UnfriendlySyntax");
+        runTest("UnfriendlySyntax");
+    }
+
+    @Test
+    void FlowInput() {
+        runTest("FlowInput");
     }
 }

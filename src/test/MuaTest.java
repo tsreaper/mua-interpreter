@@ -9,10 +9,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class MuaTest {
+    String DIRECTORY;
+
     private final String ASSETS_DIR = "src/test/assets/";
     private final ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 
     void runTest(String filename) {
+        filename = DIRECTORY + filename;
         String muaFilename = ASSETS_DIR + filename + ".mua";
         String inputFilename = ASSETS_DIR + filename + ".in";
         String ansFilename = ASSETS_DIR + filename + ".ans";
