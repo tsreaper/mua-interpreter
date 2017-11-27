@@ -48,6 +48,11 @@ public class MuaScanner {
         return ret.toString();
     }
 
+    static public void clear() {
+        scanner = new Scanner(System.in);
+        tokens.clear();
+    }
+
     static private void read() {
         String line = scanner.nextLine();
         if (line.length() > 0) {

@@ -4,6 +4,7 @@ import exception.operation.NoSuchOperationException;
 import lang.element.MuaWord;
 import lang.operation.arithmetic.*;
 import lang.operation.comparison.*;
+import lang.operation.control.OpRepeat;
 import lang.operation.io.*;
 import lang.operation.logic.*;
 import lang.operation.namespace.*;
@@ -17,7 +18,8 @@ public class OperationUtil {
             "print", "read", "readlinst",
             "add", "sub", "mul", "div", "mod",
             "eq", "gt", "lt",
-            "and", "or", "not"
+            "and", "or", "not",
+            "repeat"
     );
 
     private OperationUtil() {
@@ -79,6 +81,10 @@ public class OperationUtil {
                 return new OpOr();
             case "not":
                 return new OpNot();
+
+            // Control operation
+            case "repeat":
+                return new OpRepeat();
 
             default:
                 // Check for : operation

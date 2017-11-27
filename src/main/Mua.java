@@ -1,5 +1,7 @@
 import exception.MuaException;
+import exception.operation.OperandNumberException;
 import interpretation.Interpreter;
+import interpretation.MuaScanner;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,8 +13,11 @@ public class Mua {
         Scanner scanner;
         int lineNum = 0;
 
+        Interpreter.clear();
+        MuaScanner.clear();
+
         if (args.length == 0) {
-            Interpreter.setIsInteractive(true);
+            Interpreter.isInteractive = true;
 
             // Code from keyboard
             scanner = new Scanner(System.in);
@@ -43,7 +48,7 @@ public class Mua {
                 }
             }
         } else {
-            Interpreter.setIsInteractive(false);
+            Interpreter.isInteractive = false;
 
             // Code from file
             try {
@@ -65,6 +70,13 @@ public class Mua {
                     System.out.println(e.getType() + " in line " + String.valueOf(lineNum) + ": " + e.getMessage());
                     break;
                 }
+            }
+
+            // Force finish
+            try {
+                Interpreter.finishedThrowException();
+            } catch (OperandNumberException e) {
+                System.out.println(e.getType() + " in line " + String.valueOf(lineNum) + ": " + e.getMessage());
             }
         }
     }

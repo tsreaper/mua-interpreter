@@ -1,19 +1,13 @@
 package interpretation;
 
 import exception.MuaException;
-import lang.element.MuaElement;
-import lang.element.MuaOperation;
+import exception.operation.OperandNumberException;
 import lang.namespace.NamespaceManager;
-import lang.operation.ICanExecute;
-import lang.operation.OperationUtil;
-
-import java.util.ArrayList;
 
 public class Interpreter {
+    static public boolean isInteractive = false;
     static private Tokenizer tokenizer = new Tokenizer(true);
     static private MuaRunner runner = new MuaRunner();
-
-    static private boolean isInteractive = false;
 
     static {
         NamespaceManager.addNamespace();
@@ -22,12 +16,12 @@ public class Interpreter {
     private Interpreter() {
     }
 
-    static public void setIsInteractive(boolean value) {
-        isInteractive = value;
-    }
-
     static public boolean finished() {
         return tokenizer.finished() && runner.finished();
+    }
+
+    static public void finishedThrowException() throws OperandNumberException {
+        runner.finishedThrowException();
     }
 
     static public void interpret(String line) throws MuaException {
@@ -35,10 +29,7 @@ public class Interpreter {
             tokenizer.tokenize(line);
 
             while (tokenizer.hasNext()) {
-                MuaElement result = runner.run(tokenizer.getElement());
-                if (result != null && isInteractive) {
-                    System.out.println(result.getValue());
-                }
+                runner.run(tokenizer.getElement(), isInteractive);
             }
         } catch (MuaException e) {
             clear();
@@ -46,7 +37,7 @@ public class Interpreter {
         }
     }
 
-    static private void clear() {
+    static public void clear() {
         tokenizer.clear();
         runner.clear();
     }
