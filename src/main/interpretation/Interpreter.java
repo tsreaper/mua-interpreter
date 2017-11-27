@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Interpreter {
     static private Tokenizer tokenizer = new Tokenizer(true);
-    static private ArrayList<ICanExecute> operations = new ArrayList<>();
+    static private MuaRunner runner = new MuaRunner();
 
     static private boolean isInteractive = false;
 
@@ -27,7 +27,7 @@ public class Interpreter {
     }
 
     static public boolean finished() {
-        return tokenizer.finished() && operations.size() == 0;
+        return tokenizer.finished() && runner.finished();
     }
 
     static public void interpret(String line) throws MuaException {
@@ -35,23 +35,9 @@ public class Interpreter {
             tokenizer.tokenize(line);
 
             while (tokenizer.hasNext()) {
-                MuaElement element = tokenizer.getElement();
-                if (element instanceof MuaOperation) {
-                    operations.add(OperationUtil.getOperation(element.getValue()));
-                } else {
-                    operations.add(element);
-                }
-
-                while (operations.size() > 1 && operations.get(operations.size() - 1).canExecute()) {
-                    ICanExecute operation = operations.remove(operations.size() - 1);
-                    operations.get(operations.size() - 1).addOperand(operation);
-                }
-
-                if (operations.size() == 1 && operations.get(0).canExecute()) {
-                    MuaElement result = operations.remove(0).execute();
-                    if (result != null && isInteractive) {
-                        System.out.println(result.getValue());
-                    }
+                MuaElement result = runner.run(tokenizer.getElement());
+                if (result != null && isInteractive) {
+                    System.out.println(result.getValue());
                 }
             }
         } catch (MuaException e) {
@@ -62,6 +48,6 @@ public class Interpreter {
 
     static private void clear() {
         tokenizer.clear();
-        operations.clear();
+        runner.clear();
     }
 }
