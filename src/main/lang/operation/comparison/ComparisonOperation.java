@@ -15,7 +15,7 @@ abstract public class ComparisonOperation extends Operation {
 
     @Override
     public MuaElement execute() throws OperandTypeException, InvalidArithmeticOperandException {
-        assert canExecute();
+        checkOperandNum();
 
         MuaElement a = getOperand(0, "number|word");
         MuaElement b = getOperand(1, "number|word");

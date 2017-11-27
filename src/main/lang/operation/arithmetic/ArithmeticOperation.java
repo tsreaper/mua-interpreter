@@ -14,7 +14,7 @@ abstract public class ArithmeticOperation extends Operation {
 
     @Override
     public MuaElement execute() throws OperandTypeException, InvalidArithmeticOperandException {
-        assert canExecute();
+        checkOperandNum();
 
         MuaElement a = getOperand(0, "number|word");
         MuaElement b = getOperand(1, "number|word");

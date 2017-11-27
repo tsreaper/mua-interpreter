@@ -14,7 +14,7 @@ public class OpErase extends Operation {
 
     @Override
     public MuaElement execute() throws OperandTypeException {
-        assert canExecute();
+        checkOperandNum();
 
         MuaElement a = getOperand(0, "word");
         NamespaceManager.eraseBoundedElement(a.getValue());

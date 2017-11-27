@@ -16,7 +16,7 @@ public class OpReadLinst extends Operation {
 
     @Override
     public MuaElement execute() throws UnclosedListException {
-        assert canExecute();
+        checkOperandNum();
 
         String line = MuaScanner.nextLine();
         Tokenizer tokenizer = new Tokenizer(false);

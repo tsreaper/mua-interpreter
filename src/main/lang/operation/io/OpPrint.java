@@ -12,7 +12,7 @@ public class OpPrint extends Operation {
 
     @Override
     public MuaElement execute() {
-        assert canExecute();
+        checkOperandNum();
 
         MuaElement a = getOperand(0, "?");
         System.out.println(a.getValue());

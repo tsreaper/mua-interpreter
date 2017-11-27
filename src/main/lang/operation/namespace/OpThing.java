@@ -15,7 +15,7 @@ public class OpThing extends Operation {
 
     @Override
     public MuaElement execute() throws OperandTypeException, InvalidNameException {
-        assert canExecute();
+        checkOperandNum();
 
         MuaElement a = getOperand(0, "word");
         if (!NamespaceManager.isName(a.getValue())) {

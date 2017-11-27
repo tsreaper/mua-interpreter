@@ -16,7 +16,7 @@ public class OpMake extends Operation {
 
     @Override
     public MuaElement execute() throws OperandTypeException, InvalidWordException {
-        assert canExecute();
+        checkOperandNum();
 
         MuaElement a = getOperand(0, "word");
         MuaElement b = getOperand(1, "?");

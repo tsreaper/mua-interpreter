@@ -15,7 +15,7 @@ public class OpIsName extends Operation {
 
     @Override
     public MuaElement execute() throws OperandTypeException {
-        assert canExecute();
+        checkOperandNum();
 
         MuaElement a = getOperand(0, "word");
 

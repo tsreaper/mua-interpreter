@@ -13,7 +13,7 @@ public class OpNot extends Operation {
 
     @Override
     public MuaElement execute() {
-        assert canExecute();
+        checkOperandNum();
 
         MuaElement a = getOperand(0, "bool");
 

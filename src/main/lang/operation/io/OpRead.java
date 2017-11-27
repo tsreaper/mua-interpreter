@@ -16,7 +16,7 @@ public class OpRead extends Operation {
 
     @Override
     public MuaElement execute() {
-        assert canExecute();
+        checkOperandNum();
 
         String token = MuaScanner.next();
 

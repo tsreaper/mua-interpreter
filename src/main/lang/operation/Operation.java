@@ -1,6 +1,7 @@
 package lang.operation;
 
 import exception.MuaException;
+import exception.operation.OperandNumberException;
 import exception.operation.OperandTypeException;
 import lang.element.*;
 
@@ -60,5 +61,11 @@ public abstract class Operation implements ICanExecute {
             return operand;
         }
         throw new OperandTypeException(name, types, operand.getValue());
+    }
+
+    protected void checkOperandNum() throws OperandNumberException {
+        if (!canExecute()) {
+            throw new OperandNumberException(name, operandNum, operands.size());
+        }
     }
 }
