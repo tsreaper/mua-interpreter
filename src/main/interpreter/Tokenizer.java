@@ -1,5 +1,6 @@
 package interpreter;
 
+import exception.element.InvalidNumberException;
 import exception.element.UnclosedListException;
 import lang.element.*;
 import util.Util;
@@ -60,14 +61,16 @@ public class Tokenizer {
 
             // Append elements
             if (token.length() > 0) {
-                if ((token.charAt(0) >= '0' && token.charAt(0) <= '9') || token.charAt(0) == '-') {
+                try {
                     addElement(new MuaNumber(token));
-                } else if (token.charAt(0) == '"') {
-                    addElement(new MuaWord(token.substring(1)));
-                } else if (token.equals("true") || token.equals("false")) {
-                    addElement(new MuaBool(Boolean.valueOf(token)));
-                } else {
-                    addElement(new MuaOperation(token));
+                } catch (InvalidNumberException e1) {
+                    if (token.charAt(0) == '"') {
+                        addElement(new MuaWord(token.substring(1)));
+                    } else if (token.equals("true") || token.equals("false")) {
+                        addElement(new MuaBool(Boolean.valueOf(token)));
+                    } else {
+                        addElement(new MuaOperation(token));
+                    }
                 }
             }
 
