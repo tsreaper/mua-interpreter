@@ -3,6 +3,7 @@ package lang.operation;
 import exception.operation.NoSuchFunctionException;
 import lang.element.MuaElement;
 import lang.element.MuaList;
+import lang.element.MuaNumber;
 import lang.element.MuaWord;
 import lang.operation.arithmetic.*;
 import lang.operation.comparison.*;
@@ -23,7 +24,7 @@ public class OperationUtil {
             "add", "sub", "mul", "div", "mod",
             "eq", "gt", "lt",
             "and", "or", "not",
-            "repeat", "stop",
+            "run", "repeat", "stop",
             "output"
     );
 
@@ -115,6 +116,11 @@ public class OperationUtil {
                 return new OpNot();
 
             // Control operation
+            case "run":
+                // run = repeat 1
+                Operation opRun = new OpRepeat();
+                opRun.addOperand(new MuaNumber("1"));
+                return opRun;
             case "repeat":
                 return new OpRepeat();
             case "stop":
@@ -128,9 +134,9 @@ public class OperationUtil {
             default:
                 assert value.charAt(0) == ':';
 
-                Operation op = new OpThing();
-                op.addOperand(new MuaWord(value.substring(1)));
-                return op;
+                Operation opColon = new OpThing();
+                opColon.addOperand(new MuaWord(value.substring(1)));
+                return opColon;
         }
     }
 }

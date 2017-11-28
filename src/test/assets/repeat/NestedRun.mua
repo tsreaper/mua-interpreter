@@ -1,0 +1,27 @@
+run [
+    run [
+        run [
+            run [
+                run [
+                    print "Finally_here!
+                ]
+            ]
+        ]
+    ]
+]
+
+make "a 1
+run [
+    make "b [
+        run [
+            make "a add :a 1
+            make "a mul :a 2
+            print :a
+            make "c :a
+        ]
+    ]
+    run :b
+    run :b
+    run :b
+]
+print :c

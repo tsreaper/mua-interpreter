@@ -16,6 +16,11 @@ class RepeatTest extends MuaTest {
     }
 
     @Test
+    void NestedRun() {
+        runTest("NestedRun");
+    }
+
+    @Test
     void OperandNumberExceptionRepeat() {
         runTest("OperandNumberExceptionRepeat");
     }
