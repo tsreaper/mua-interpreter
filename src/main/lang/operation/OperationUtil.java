@@ -139,4 +139,22 @@ public class OperationUtil {
                 return opColon;
         }
     }
+
+    static public ArithmeticOperation getArithmeticOperation(char c) throws UnsupportedOperationException {
+        switch (c) {
+            case '+':
+                return new OpAdd();
+            case '-':
+                return new OpSub();
+            case '*':
+                return new OpMul();
+            case '/':
+                return new OpDiv();
+            case '%':
+                return new OpMod();
+            default:
+                // Impossible
+                throw new UnsupportedOperationException();
+        }
+    }
 }

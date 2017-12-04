@@ -33,8 +33,10 @@ class MuaTest {
 
         // Compare
         try {
-            String ans = new String(Files.readAllBytes(Paths.get(ansFilename)));
-            assertEquals(ans, outStream.toString().replaceAll("\\r\\n", "\n"));
+            String ans = new String(Files.readAllBytes(Paths.get(ansFilename))).
+                    replaceAll("\\r\\n", "\n");
+            String out = outStream.toString().replaceAll("\\r\\n", "\n");
+            assertEquals(ans, out);
         } catch (IOException e) {
             fail("Can't read file " + inputFilename);
         }

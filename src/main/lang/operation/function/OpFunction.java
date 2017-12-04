@@ -4,6 +4,7 @@ import interpreter.MuaRunner;
 import lang.element.MuaElement;
 import lang.element.MuaList;
 import lang.operation.Operation;
+import service.GlobalSettings;
 import service.namespace.NamespaceService;
 
 public class OpFunction extends Operation {
@@ -17,7 +18,7 @@ public class OpFunction extends Operation {
         this.name = name;
         this.params = params;
         this.operations = operations;
-        runner = new MuaRunner();
+        runner = new MuaRunner(false, GlobalSettings.interactive);
     }
 
     @Override
@@ -34,7 +35,7 @@ public class OpFunction extends Operation {
         for (int i = 0; i < operations.size(); i++) {
             runner.add(operations.get(i));
         }
-        runner.run(false);
+        runner.run();
 
         // Return from function
         return NamespaceService.getService().removeNamespace();

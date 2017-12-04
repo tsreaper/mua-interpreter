@@ -9,9 +9,4 @@ class BasicTest extends MuaTest {
     void BasicOperation() {
         runTest("BasicOperation");
     }
-
-    @Test
-    void Expression() {
-        runTest("Expression");
-    }
 }

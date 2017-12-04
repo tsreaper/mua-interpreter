@@ -5,6 +5,7 @@ import interpreter.MuaRunner;
 import lang.element.MuaElement;
 import lang.element.MuaList;
 import lang.operation.Operation;
+import service.GlobalSettings;
 
 public class OpRepeat extends Operation {
     private MuaRunner runner;
@@ -13,7 +14,7 @@ public class OpRepeat extends Operation {
         super();
         operandNum = 2;
         name = "repeat";
-        runner = new MuaRunner();
+        runner = new MuaRunner(false, GlobalSettings.interactive);
     }
 
     @Override
@@ -28,7 +29,7 @@ public class OpRepeat extends Operation {
             for (int j = 0; j < b.size(); j++) {
                 runner.add(b.get(j));
             }
-            runner.run(false);
+            runner.run();
 
             if (runner.shouldStop()) {
                 break;

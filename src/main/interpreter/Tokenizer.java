@@ -1,5 +1,6 @@
 package interpreter;
 
+import exception.element.InvalidExpressionException;
 import exception.element.InvalidNumberException;
 import exception.element.UnclosedListException;
 import lang.element.*;
@@ -9,13 +10,17 @@ import java.util.ArrayList;
 
 public class Tokenizer {
     private boolean flowInput;
+
     private ArrayList<MuaElement> elements;
     private ArrayList<MuaList> muaLists;
+    private MuaExpression muaExpression;
 
     public Tokenizer(boolean flowInput) {
         this.flowInput = flowInput;
+
         elements = new ArrayList<>();
         muaLists = new ArrayList<>();
+        muaExpression = null;
     }
 
     public MuaElement getElement() {
@@ -30,68 +35,90 @@ public class Tokenizer {
     }
 
     public boolean finished() {
-        return elements.size() == 0 && muaLists.size() == 0;
+        return elements.size() == 0 && muaLists.size() == 0 && muaExpression == null;
     }
 
     public void clear() {
         elements.clear();
         muaLists.clear();
+        muaExpression = null;
     }
 
-    public void tokenize(String line) throws UnclosedListException {
+    public void tokenize(String line) throws UnclosedListException, InvalidExpressionException {
         // Split string
-        String[] strArr = Util.splitStringToArray(line);
+        ArrayList<String> strArr = Util.splitString(line);
 
-        for (String token : strArr) {
-            // Check if the lang.element is a comment
+        for (int i = 0; i < strArr.size(); i++) {
+            String token = strArr.get(i);
+
+            // Check if the element is a comment
             if (token.length() >= 2 && token.substring(0, 2).equals("//")) {
                 break;
             }
 
-            // Check if the lang.element is a list
-            int closedList = 0;
-            while (token.length() > 0 && token.charAt(0) == '[') {
-                muaLists.add(new MuaList());
-                token = token.substring(1);
-            }
-            while (token.length() > 0 && token.charAt(token.length() - 1) == ']' && token.charAt(0) != ':') {
-                closedList++;
-                token = token.substring(0, token.length() - 1);
-            }
+            // Check []
+            token = splitList(strArr, i);
 
-            // Append elements
-            if (token.length() > 0) {
-                try {
-                    addElement(new MuaNumber(token));
-                } catch (InvalidNumberException e1) {
-                    if (token.charAt(0) == '"') {
-                        addElement(new MuaWord(token.substring(1)));
-                    } else if (token.equals("true") || token.equals("false")) {
-                        addElement(new MuaBool(Boolean.valueOf(token)));
-                    } else {
-                        addElement(new MuaOperation(token));
-                    }
-                }
-            }
-
-            // Close current list
-            for (; closedList > 0; closedList--) {
-                if (muaLists.size() == 0) {
-                    throw new UnclosedListException();
-                }
-
-                MuaList currentList = muaLists.remove(muaLists.size() - 1);
-                if (muaLists.size() > 0) {
-                    muaLists.get(muaLists.size() - 1).appendElement(currentList);
-                } else {
-                    elements.add(currentList);
-                }
+            if (muaExpression == null) {
+                // Not in expression. Tokenize normally
+                parseToken(token);
+            } else {
+                // In expression
+                appendToExpression(token);
             }
         }
 
         // Check if lists are closed if not flow input
         if (!flowInput && muaLists.size() > 0) {
             throw new UnclosedListException();
+        }
+
+        // Check if expression is closed if not flow input
+        if (!flowInput && muaExpression != null) {
+            throw new InvalidExpressionException("Unmatched brackets.");
+        }
+    }
+
+    private void parseToken(String token) throws InvalidExpressionException {
+        assert token.length() > 0;
+
+        if (token.equals("[")) {
+            muaLists.add(new MuaList());
+        } else if (token.equals("]")) {
+            closeList();
+        } else {
+            appendElement(token);
+        }
+    }
+
+    private void appendElement(String token) throws InvalidExpressionException {
+        if (token.charAt(0) == '(') {
+            // Expression begins
+            muaExpression = new MuaExpression();
+            appendToExpression(token.substring(1));
+        } else {
+            // Not in expression
+            try {
+                addElement(new MuaNumber(token));
+            } catch (InvalidNumberException e1) {
+                if (token.charAt(0) == '"') {
+                    addElement(new MuaWord(token.substring(1)));
+                } else if (token.equals("true") || token.equals("false")) {
+                    addElement(new MuaBool(Boolean.valueOf(token)));
+                } else {
+                    addElement(new MuaOperation(token));
+                }
+            }
+        }
+    }
+
+    private void appendToExpression(String s) throws InvalidExpressionException {
+        assert muaExpression != null;
+
+        muaExpression.appendString(s);
+        if (muaExpression.canExecute()) {
+            addElement(muaExpression);
+            muaExpression = null;
         }
     }
 
@@ -100,6 +127,48 @@ public class Tokenizer {
             muaLists.get(muaLists.size() - 1).appendElement(element);
         } else {
             elements.add(element);
+        }
+    }
+
+    private String splitList(ArrayList<String> strArr, int index) {
+        String token = strArr.get(index);
+        ArrayList<String> splitArr = new ArrayList<>();
+
+        // Split [
+        while (token.length() > 1 && token.charAt(0) == '[') {
+            splitArr.add("[");
+            token = token.substring(1);
+        }
+
+        // Split ]
+        int count = 0;
+        while (token.length() > 1 && token.charAt(token.length() - 1) == ']' && token.charAt(0) != ':') {
+            count++;
+            token = token.substring(0, token.length() - 1);
+        }
+        splitArr.add(token);
+        for (; count > 0; count--) {
+            splitArr.add("]");
+        }
+
+        // Insert split tokens into strArr
+        token = splitArr.remove(0);
+        if (splitArr.size() > 0) {
+            strArr.addAll(index + 1, splitArr);
+        }
+        return token;
+    }
+
+    private void closeList() {
+        if (muaLists.size() == 0) {
+            throw new UnclosedListException();
+        }
+
+        MuaList currentList = muaLists.remove(muaLists.size() - 1);
+        if (muaLists.size() > 0) {
+            muaLists.get(muaLists.size() - 1).appendElement(currentList);
+        } else {
+            elements.add(currentList);
         }
     }
 }

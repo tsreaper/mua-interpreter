@@ -7,18 +7,23 @@ import lang.element.MuaOperation;
 import lang.operation.ICanExecute;
 import lang.operation.OperationUtil;
 import lang.operation.control.OpStop;
-import service.GlobalSettings;
 
 import java.util.ArrayList;
 
 public class MuaRunner {
     private ArrayList<MuaElement> elements;
     private ArrayList<ICanExecute> stack;
+
+    private boolean flowInput;
+    private boolean interactive;
     private boolean shouldStop;
 
-    public MuaRunner() {
+    public MuaRunner(boolean flowInput, boolean interactive) {
         elements = new ArrayList<>();
         stack = new ArrayList<>();
+
+        this.flowInput = flowInput;
+        this.interactive = interactive;
         shouldStop = false;
     }
 
@@ -40,12 +45,15 @@ public class MuaRunner {
         elements.add(element);
     }
 
-    public void run(boolean flowInput) throws MuaException {
+    public ArrayList<MuaElement> run() throws MuaException {
+        ArrayList<MuaElement> ret = new ArrayList<>();
+
         if (shouldStop) {
-            return;
+            return ret;
         }
 
         while (elements.size() > 0) {
+            // Change element to operation
             MuaElement element = elements.remove(0);
             if (element instanceof MuaOperation) {
                 if (((MuaOperation) element).isOperation()) {
@@ -63,6 +71,7 @@ public class MuaRunner {
                 break;
             }
 
+            // Run operations in stack
             while (stack.size() > 1 && stack.get(stack.size() - 1).canExecute()) {
                 ICanExecute operation = stack.remove(stack.size() - 1);
                 stack.get(stack.size() - 1).addOperand(operation);
@@ -70,7 +79,9 @@ public class MuaRunner {
 
             if (stack.size() == 1 && stack.get(0).canExecute()) {
                 MuaElement result = stack.remove(0).execute();
-                if (result != null && GlobalSettings.interactive) {
+                ret.add(result);
+                if (result != null && interactive) {
+                    // Print result if needed
                     System.out.println(result.getValue());
                 }
             }
@@ -80,6 +91,8 @@ public class MuaRunner {
             // Not flow input, force to execute the remaining operations
             forceExecute();
         }
+
+        return ret;
     }
 
     void forceExecute() throws MuaException {

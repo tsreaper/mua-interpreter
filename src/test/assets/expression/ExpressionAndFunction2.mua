@@ -1,0 +1,5 @@
+make ("a) (2        +    3/            5)
+print (:a +                 1)
+print (:a)
+make ("f) ( [ [ "a ] [ make ("b) (:a + 1) output (:b) ] ] )
+print (f (:a))

@@ -54,7 +54,7 @@ public class MuaScanner implements IScannerServiceProvider {
     private void read() {
         String line = scanner.nextLine();
         if (line.length() > 0) {
-            tokens.addAll(Util.splitStringToArrayList(line));
+            tokens.addAll(Util.splitString(line));
             tokens.add("\n");
         }
     }

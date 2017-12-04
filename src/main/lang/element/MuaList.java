@@ -12,7 +12,8 @@ public class MuaList extends MuaElement {
     @Override
     public String getValue() {
         StringBuilder ret = new StringBuilder();
-        for (MuaElement element : value) {
+        for (int i = 0; i < size(); i++) {
+            MuaElement element = get(i);
             if (ret.length() > 0) {
                 ret.append(' ');
             }

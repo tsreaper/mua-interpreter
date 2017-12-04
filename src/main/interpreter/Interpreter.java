@@ -2,6 +2,7 @@ package interpreter;
 
 import exception.MuaException;
 import exception.operation.OperandNumberException;
+import service.GlobalSettings;
 import service.namespace.NamespaceService;
 
 public class Interpreter {
@@ -11,7 +12,7 @@ public class Interpreter {
 
     public Interpreter() {
         tokenizer = new Tokenizer(true);
-        runner = new MuaRunner();
+        runner = new MuaRunner(true, GlobalSettings.interactive);
         shouldStop = false;
 
         NamespaceService.getService().addNamespace();
@@ -35,7 +36,7 @@ public class Interpreter {
             while (tokenizer.hasNext()) {
                 runner.add(tokenizer.getElement());
             }
-            runner.run(true);
+            runner.run();
 
             if (runner.shouldStop()) {
                 shouldStop = true;
