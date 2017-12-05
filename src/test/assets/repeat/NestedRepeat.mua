@@ -1,3 +1,5 @@
+// Calculate 1 + 2 + ... + a
+
 make "a read
 make "ans 0
 
