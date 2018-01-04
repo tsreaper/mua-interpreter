@@ -4,3 +4,6 @@
 *.iws
 .idea/
 out/
+
+# Manifest
+MANIFEST.MF

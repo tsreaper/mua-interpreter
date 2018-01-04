@@ -1,10 +1,7 @@
 package lang.operation;
 
 import exception.operation.NoSuchFunctionException;
-import lang.element.MuaElement;
-import lang.element.MuaList;
-import lang.element.MuaNumber;
-import lang.element.MuaWord;
+import lang.element.*;
 import lang.operation.arithmetic.*;
 import lang.operation.comparison.*;
 import lang.operation.control.*;
@@ -56,9 +53,12 @@ public class OperationUtil {
             throw new NoSuchFunctionException(value);
         }
 
+        // Check params
         MuaList params = (MuaList) list.get(0);
         for (int i = 0; i < params.size(); i++) {
-            if (!(params.get(i) instanceof MuaWord)) {
+            MuaElement param = params.get(i);
+            // Params should not start with "
+            if (!(param instanceof MuaOperation && !isOperation(param.getValue()))) {
                 throw new NoSuchFunctionException(value);
             }
         }

@@ -1,11 +1,11 @@
-make ("a_plus_b) [["a "b] [
+make ("a_plus_b) [[a b] [
     output (:a + :b)
 ]]
 
 // Print 1 + 2 + 3 + 4
 print a_plus_b (1) (a_plus_b (a_plus_b (1+1) (1+1*1+1)) (1+1-1+1-1+1+1+1*2-1))
 
-make ("abc) [["a "b "c] [
+make ("abc) [[a b c] [
     output ((add :a (:b + 1 - 1)) + :c)
 ]]
 
