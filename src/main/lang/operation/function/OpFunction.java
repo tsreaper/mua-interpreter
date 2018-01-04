@@ -26,7 +26,7 @@ public class OpFunction extends Operation {
         checkOperandNum();
 
         // Add and initialize new namespace
-        NamespaceService.getService().addNamespace();
+        NamespaceService.getService().addNamespace(NamespaceService.getService().getNamespaceByKey(name));
         for (int i = 0; i < operandNum; i++) {
             NamespaceService.getService().bindElement(params.get(i).getValue(), getOperand(i, "?"));
         }

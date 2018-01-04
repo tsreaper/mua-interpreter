@@ -1,0 +1,28 @@
+make "f0 [[e] [
+    print isname "a
+    print isname "b
+    print isname "c
+    print isname "d
+    print isname "e
+]]
+
+make "f1 [[a] [
+    make "f2 [[b] [
+        print isname "a
+        f3 0 0
+    ]]
+    make "f3 [[c] [
+        print isname "a
+        print isname "b
+        make "f4 [[d] [
+            print isname "a
+            print isname "b
+            print isname "c
+            f0 0 0
+        ]]
+        f4 0 0
+    ]]
+    f2 0 0
+]]
+
+f1 0 0

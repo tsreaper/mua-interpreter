@@ -1,0 +1,24 @@
+make "a 1
+make "b "test
+make "c [1 [2 3] 4]
+make "d true
+
+print isnumber :a
+print isnumber :b
+print isnumber :c
+print isnumber :d
+
+print isword :a
+print isword :b
+print isword :c
+print isword :d
+
+print islist :a
+print islist :b
+print islist :c
+print islist :d
+
+print isbool :a
+print isbool :b
+print isbool :c
+print isbool :d

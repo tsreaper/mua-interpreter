@@ -1,0 +1,22 @@
+make "f3 [[c d] [
+    export
+]]
+
+make "f2 [[a b] [
+    print isname "a    // true, "a is a local name
+    erall
+    print isname "a    // false, erased
+    make "a 1
+    make "b 2
+    print isname "a    // true
+    export
+    print isname "a    // true, as "a is now a global name
+    f3 3 4
+]]
+
+make "f1 [[a b] [
+    f2 :a :b
+]]
+
+f1 100 200
+print (:a + :b + :c + :d)

@@ -1,0 +1,22 @@
+make "word_a "this_is_word_a_
+make "word_b "this_is_word_b_
+make "word_empty "
+
+print isempty :word_a
+print isempty :word_empty
+print word :word_a :word_b
+print word :word_a 123
+print word :word_b false
+print list :word_a :word_b
+
+make "list_a [1 ["a "b] true]
+make "list_b [[true false] "b]
+make "list_empty []
+
+print isempty :list_a
+print isempty :list_empty
+print sentence :list_a :list_b
+print list :list_a :list_b
+print list :word_a :list_a
+print join :list_a :list_b
+print join :list_b :word_b

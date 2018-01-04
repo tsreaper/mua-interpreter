@@ -6,13 +6,15 @@ import lang.element.MuaElement;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-class Namespace {
+public class Namespace {
     MuaElement returnValue;
     private HashMap<String, MuaElement> wordMap;
+    private Namespace parent;
 
-    Namespace() {
+    Namespace(Namespace parent) {
         returnValue = null;
         wordMap = new HashMap<>();
+        this.parent = parent;
     }
 
     MuaElement getBoundedElement(String key) throws InvalidNameException {
@@ -44,5 +46,9 @@ class Namespace {
 
     boolean isName(String key) {
         return wordMap.containsKey(key);
+    }
+
+    Namespace getParent() {
+        return parent;
     }
 }

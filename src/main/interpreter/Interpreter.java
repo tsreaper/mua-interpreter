@@ -15,7 +15,7 @@ public class Interpreter {
         runner = new MuaRunner(true, GlobalSettings.interactive);
         shouldStop = false;
 
-        NamespaceService.getService().addNamespace();
+        NamespaceService.getService().addNamespace(null);
     }
 
     public boolean finished() {

@@ -1,0 +1,11 @@
+make "f1 [[a b c] [
+    save "test_ns
+]]
+
+make "f2 [[d e f] [
+    load "test_ns
+    output (:a + :b + :c + :d + :e + :f)
+]]
+
+f1 1 2 3
+print f2 4 5 6

@@ -1,13 +1,16 @@
 package service.namespace;
 
 import lang.element.MuaElement;
+import lang.namespace.Namespace;
 
 import java.util.ArrayList;
 
 public interface INamespaceServiceProvider {
-    void addNamespace();
+    void addNamespace(Namespace parent);
 
     MuaElement removeNamespace();
+
+    Namespace getNamespaceByKey(String key);
 
     MuaElement getBoundedElement(String key);
 

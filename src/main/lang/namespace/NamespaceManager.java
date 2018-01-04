@@ -13,22 +13,27 @@ public class NamespaceManager implements INamespaceServiceProvider {
         nsList = new ArrayList<>();
     }
 
-    public void addNamespace() {
-        nsList.add(new Namespace());
+    public void addNamespace(Namespace parent) {
+        nsList.add(new Namespace(parent));
     }
 
     public MuaElement removeNamespace() {
         return nsList.remove(nsList.size() - 1).returnValue;
     }
 
-    public MuaElement getBoundedElement(String key) throws InvalidNameException {
-        for (int i = nsList.size() - 1; i >= 0; i--) {
-            try {
-                return nsList.get(i).getBoundedElement(key);
-            } catch (InvalidNameException e) {
-            }
+    public Namespace getNamespaceByKey(String key) throws InvalidNameException {
+        Namespace ns = nsList.get(nsList.size() - 1);
+        while (ns != null && !ns.isName(key)) {
+            ns = ns.getParent();
+        }
+        if (ns != null) {
+            return ns;
         }
         throw new InvalidNameException(key);
+    }
+
+    public MuaElement getBoundedElement(String key) throws InvalidNameException {
+        return getNamespaceByKey(key).getBoundedElement(key);
     }
 
     public ArrayList<String> getKeys() {
@@ -37,8 +42,10 @@ public class NamespaceManager implements INamespaceServiceProvider {
 
     public ArrayList<String> getAllNamespaceKeys() {
         ArrayList<String> ret = new ArrayList<>();
-        for (Namespace ns : nsList) {
+        Namespace ns = nsList.get(nsList.size() - 1);
+        while (ns != null) {
             ret.addAll(ns.getKeys());
+            ns = ns.getParent();
         }
         return ret;
     }
@@ -48,12 +55,13 @@ public class NamespaceManager implements INamespaceServiceProvider {
     }
 
     public boolean eraseBoundedElement(String key) {
-        for (int i = nsList.size() - 1; i >= 0; i--) {
-            if (nsList.get(i).eraseBoundedElement(key)) {
-                return true;
-            }
+        try {
+            Namespace ns = getNamespaceByKey(key);
+            ns.eraseBoundedElement(key);
+            return true;
+        } catch (InvalidNameException e) {
+            return false;
         }
-        return false;
     }
 
     public void eraseAll() {
@@ -61,12 +69,12 @@ public class NamespaceManager implements INamespaceServiceProvider {
     }
 
     public boolean isName(String key) {
-        for (int i = nsList.size() - 1; i >= 0; i--) {
-            if (nsList.get(i).isName(key)) {
-                return true;
-            }
+        try {
+            getNamespaceByKey(key);
+            return true;
+        } catch (InvalidNameException e) {
+            return false;
         }
-        return false;
     }
 
     public void setReturnValue(MuaElement element) {
@@ -74,7 +82,7 @@ public class NamespaceManager implements INamespaceServiceProvider {
     }
 
     public boolean isGlobal() {
-        return nsList.size() == 1;
+        return nsList.get(nsList.size() - 1).getParent() == null;
     }
 
     public void export() {

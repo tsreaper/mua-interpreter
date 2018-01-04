@@ -1,0 +1,15 @@
+make "a "abc
+make "b [1 2 3]
+
+print first :a
+print last :a
+print butfirst :a
+print butlast :a
+print eq first :a first first :a
+print isempty butfirst first :a
+
+print first :b
+print last :b
+print butfirst :b
+print butlast :b
+print isempty butlast butlast butlast :b
