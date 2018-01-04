@@ -3,6 +3,7 @@ package lang.namespace;
 import exception.operation.InvalidNameException;
 import lang.element.MuaElement;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 class Namespace {
@@ -21,6 +22,10 @@ class Namespace {
         throw new InvalidNameException(key);
     }
 
+    ArrayList<String> getKeys() {
+        return new ArrayList<>(wordMap.keySet());
+    }
+
     void bindElement(String key, MuaElement element) {
         wordMap.put(key, element);
     }
@@ -31,6 +36,10 @@ class Namespace {
             return true;
         }
         return false;
+    }
+
+    void eraseAll() {
+        wordMap.clear();
     }
 
     boolean isName(String key) {
