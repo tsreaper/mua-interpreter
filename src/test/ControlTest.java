@@ -7,21 +7,26 @@ class ControlTest extends MuaTest {
 
     @Test
     void BasicRepeat() {
-        runTest("BasicRepeat");
+        strcmpTest("BasicRepeat");
     }
 
     @Test
     void NestedRepeat() {
-        runTest("NestedRepeat");
+        strcmpTest("NestedRepeat");
     }
 
     @Test
     void NestedRun() {
-        runTest("NestedRun");
+        strcmpTest("NestedRun");
+    }
+
+    @Test
+    void NestedIf() {
+        strcmpTest("NestedIf");
     }
 
     @Test
     void OperandNumberExceptionRepeat() {
-        runTest("OperandNumberExceptionRepeat");
+        strcmpTest("OperandNumberExceptionRepeat");
     }
 }

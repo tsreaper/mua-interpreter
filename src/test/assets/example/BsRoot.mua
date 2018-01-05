@@ -1,0 +1,25 @@
+// Find root of x^2-100 = 0 in [0, 100]
+
+make "average [[a b] [output ((:a+:b)/2)]]
+
+make "close_enough? [[left right] [
+    output (:right - :left < 0.00001)
+]]
+
+make "bs_root [[f left right] [
+    make "mid average :left :right
+    if close_enough? :left :right
+        [output :mid]
+        [
+            make "test_value f :mid
+            if (:test_value > 0)
+                [output bs_root :f :left :mid]
+                [
+                    if (:test_value < 0)
+                        [output bs_root :f :mid :right]
+                        [output :mid]
+                ]
+        ]
+]]
+
+print bs_root [[x] [output (:x*:x-100)]] 0 100

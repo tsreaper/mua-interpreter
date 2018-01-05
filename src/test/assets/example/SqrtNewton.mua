@@ -1,0 +1,22 @@
+// Sqrt by newton's method
+
+make "abs [[x] [
+    if (:x < 0) [
+        output (-:x)
+    ] [
+        output :x
+    ]
+]]
+
+make "sqrt_iter [[guess x] [
+    if (abs (:guess * :guess - :x) < 0.00001) [
+        output :guess
+    ] [
+        output sqrt_iter ((:guess+:x/:guess)/2) :x
+    ]
+]]
+
+repeat read [
+    make "x read
+    print sqrt_iter :x :x
+]

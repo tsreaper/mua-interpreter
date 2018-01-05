@@ -1,7 +1,6 @@
 package interpreter;
 
 import exception.MuaException;
-import exception.operation.NoSuchFunctionException;
 import lang.element.MuaElement;
 import lang.element.MuaOperation;
 import lang.operation.ICanExecute;
@@ -41,7 +40,7 @@ public class MuaRunner {
         shouldStop = false;
     }
 
-    public void add(MuaElement element) throws NoSuchFunctionException {
+    public void add(MuaElement element) {
         elements.add(element);
     }
 

@@ -82,12 +82,16 @@ public class Tokenizer {
     private void parseToken(String token) throws InvalidExpressionException {
         assert token.length() > 0;
 
-        if (token.equals("[")) {
-            muaLists.add(new MuaList());
-        } else if (token.equals("]")) {
-            closeList();
-        } else {
-            appendElement(token);
+        switch (token) {
+            case "[":
+                muaLists.add(new MuaList());
+                break;
+            case "]":
+                closeList();
+                break;
+            default:
+                appendElement(token);
+                break;
         }
     }
 
@@ -142,7 +146,7 @@ public class Tokenizer {
 
         // Split ]
         int count = 0;
-        while (token.length() > 1 && token.charAt(token.length() - 1) == ']' && token.charAt(0) != ':') {
+        while (token.length() > 1 && token.charAt(token.length() - 1) == ']') {
             count++;
             token = token.substring(0, token.length() - 1);
         }

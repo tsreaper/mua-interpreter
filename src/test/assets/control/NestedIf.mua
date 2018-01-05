@@ -1,0 +1,16 @@
+make "a 7
+make "b 6
+
+if (:a > :b) [
+    if (:a % 2 = 0) [
+        print "a>b_and_a%2=0
+    ] [
+        print "a>b_and_a%2!=0
+    ]
+] [
+    if (:a % 2 = 0) [
+        print "a<=b_and_a%2=0
+    ] [
+        print "a<=b_and_a%2!=0
+    ]
+]

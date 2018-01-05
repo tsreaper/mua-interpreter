@@ -86,6 +86,21 @@ public class MuaExpression extends MuaElement {
             return result;
         }
 
+        // Check unary +, -
+        if (exp.charAt(0) == '+') {
+            MuaElement element = calcExpression(exp.substring(1));
+            ArithmeticOperation ao = OperationUtil.getArithmeticOperation('*');
+            ao.addOperand(element);
+            ao.addOperand(new MuaNumber("1"));
+            return ao.execute();
+        } else if (exp.charAt(0) == '-') {
+            MuaElement element = calcExpression(exp.substring(1));
+            ArithmeticOperation ao = OperationUtil.getArithmeticOperation('*');
+            ao.addOperand(element);
+            ao.addOperand(new MuaNumber("-1"));
+            return ao.execute();
+        }
+
         // +-*/% not found. Run raw mua
         Tokenizer tokenizer = new Tokenizer(false);
         MuaRunner runner = new MuaRunner(false, false);

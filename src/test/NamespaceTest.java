@@ -11,12 +11,12 @@ class NamespaceTest extends MuaTest {
 
     @Test
     void CopyNamespace() throws IOException {
-        runTest("CopyNamespace");
+        strcmpTest("CopyNamespace");
         Files.delete(Paths.get("test_ns.mns"));
     }
 
     @Test
     void EraseAndExport() {
-        runTest("EraseAndExport");
+        strcmpTest("EraseAndExport");
     }
 }

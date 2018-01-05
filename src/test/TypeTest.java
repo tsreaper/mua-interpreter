@@ -7,16 +7,16 @@ class TypeTest extends MuaTest {
 
     @Test
     void IsType() {
-        runTest("IsType");
+        strcmpTest("IsType");
     }
 
     @Test
     void Concat() {
-        runTest("Concat");
+        strcmpTest("Concat");
     }
 
     @Test
     void FirstLast() {
-        runTest("FirstLast");
+        strcmpTest("FirstLast");
     }
 }

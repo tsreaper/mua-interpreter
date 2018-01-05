@@ -7,11 +7,16 @@ class SyntaxTest extends MuaTest {
 
     @Test
     void UnfriendlySyntax() {
-        runTest("UnfriendlySyntax");
+        strcmpTest("UnfriendlySyntax");
     }
 
     @Test
     void FlowInput() {
-        runTest("FlowInput");
+        strcmpTest("FlowInput");
+    }
+
+    @Test
+    void ExpressionAndList() {
+        strcmpTest("ExpressionAndList");
     }
 }

@@ -1,0 +1,18 @@
+make "factorial_iter [[productor counter n] [
+    if (:counter > :n) [
+        output :productor
+    ] [
+        output factorial_iter
+            (:productor * :counter)
+            (:counter + 1)
+            :n
+    ]
+]]
+
+make "factorial [[x] [
+    output factorial_iter 1 1 :x
+]]
+
+repeat read [
+    print factorial read
+]

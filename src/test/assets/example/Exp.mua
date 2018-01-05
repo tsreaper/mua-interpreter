@@ -1,0 +1,31 @@
+// Calculate b^n
+
+make "even? [[x] [
+    if (:x % 2 = 0) [
+        output true
+    ] [
+        output false
+    ]
+]]
+
+make "square [[x] [
+    output (:x * :x)
+]]
+
+make "fast_exp [[b n] [
+    if (:n = 0) [
+        output 1
+    ] [
+        if even? :n [
+            output square fast_exp :b (:n / 2)
+        ] [
+            output (:b * fast_exp :b (:n - 1))
+        ]
+    ]
+]]
+
+repeat read [
+    make "b read
+    make "n read
+    print fast_exp :b :n
+]

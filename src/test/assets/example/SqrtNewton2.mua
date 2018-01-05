@@ -1,0 +1,34 @@
+// Sqrt by newton's method
+
+make "abs [[x] [
+    if (:x < 0) [
+        output (-:x)
+    ] [
+        output :x
+    ]
+]]
+
+make "average [[a b] [
+    output ((:a+:b)/2)
+]]
+
+make "my_sqrt [[x] [
+    make "good_enough [[guess x] [
+        output (abs (:guess * :guess - :x) < 0.00001)
+    ]]
+    make "improve [[guess x] [
+        output average :guess (:x/:guess)
+    ]]
+    make "sqrt_iter [[guess x] [
+        if good_enough :guess :x [
+            output :guess
+        ] [
+            output sqrt_iter improve :guess :x :x
+        ]
+    ]]
+    output sqrt_iter 1.0 :x
+]]
+
+repeat read [
+    print my_sqrt read
+]

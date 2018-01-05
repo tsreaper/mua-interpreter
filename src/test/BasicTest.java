@@ -7,6 +7,6 @@ class BasicTest extends MuaTest {
 
     @Test
     void BasicOperation() {
-        runTest("BasicOperation");
+        strcmpTest("BasicOperation");
     }
 }

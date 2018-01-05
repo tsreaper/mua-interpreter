@@ -1,0 +1,19 @@
+// Calculate pi by monte carlo simulation
+
+make "mc [[] [
+    make "a random 1
+    make "b random 1
+    if (:a * :a + :b * :b <= 1)
+        [output 1]
+        [output 0]
+]]
+
+make "calc_pi [[iter] [
+    make "cnt 0
+    repeat :iter [
+        make "cnt (:cnt + mc)
+    ]
+    output (:cnt / :iter * 4)
+]]
+
+print calc_pi read

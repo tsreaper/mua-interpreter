@@ -7,17 +7,17 @@ class ExpressionTest extends MuaTest {
 
     @Test
     void ArithmeticExpression() {
-        runTest("ArithmeticExpression");
+        strcmpTest("ArithmeticExpression");
     }
 
     @Test
     void ComparisonExpression() {
-        runTest("ComparisonExpression");
+        strcmpTest("ComparisonExpression");
     }
 
     @Test
     void ExpressionAndFunction() {
-        runTest("ExpressionAndFunction");
-        runTest("ExpressionAndFunction2");
+        strcmpTest("ExpressionAndFunction");
+        strcmpTest("ExpressionAndFunction2");
     }
 }

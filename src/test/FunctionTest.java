@@ -7,17 +7,17 @@ class FunctionTest extends MuaTest {
 
     @Test
     void BasicFunction() {
-        runTest("BasicFunction");
+        strcmpTest("BasicFunction");
     }
 
     @Test
     void CallFunctionInAnother() {
-        runTest("CallFunctionInAnother");
+        strcmpTest("CallFunctionInAnother");
     }
 
     @Test
     void FunctionClosure() {
-        runTest("FunctionClosure");
-        runTest("FunctionClosure2");
+        strcmpTest("FunctionClosure");
+        strcmpTest("FunctionClosure2");
     }
 }
