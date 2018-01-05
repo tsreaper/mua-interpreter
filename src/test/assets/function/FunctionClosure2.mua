@@ -9,7 +9,7 @@ make "f0 [[e] [
 make "f1 [[a] [
     make "f2 [[b] [
         print isname "a
-        f3 0 0
+        f3 0
     ]]
     make "f3 [[c] [
         print isname "a
@@ -18,11 +18,11 @@ make "f1 [[a] [
             print isname "a
             print isname "b
             print isname "c
-            f0 0 0
+            f0 0
         ]]
-        f4 0 0
+        f4 0
     ]]
-    f2 0 0
+    f2 0
 ]]
 
-f1 0 0
+f1 0
