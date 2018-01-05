@@ -11,6 +11,11 @@ class ExpressionTest extends MuaTest {
     }
 
     @Test
+    void ComparisonExpression() {
+        runTest("ComparisonExpression");
+    }
+
+    @Test
     void ExpressionAndFunction() {
         runTest("ExpressionAndFunction");
         runTest("ExpressionAndFunction2");

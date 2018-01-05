@@ -18,10 +18,6 @@ class FunctionTest extends MuaTest {
     @Test
     void FunctionClosure() {
         runTest("FunctionClosure");
-    }
-
-    @Test
-    void FunctionClosure2() {
         runTest("FunctionClosure2");
     }
 }

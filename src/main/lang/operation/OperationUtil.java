@@ -22,7 +22,7 @@ public class OperationUtil {
             "save", "load", "erall", "poall", "export",
             "print", "read", "readlinst",
             "add", "sub", "mul", "div", "mod",
-            "eq", "gt", "lt",
+            "eq", "gt", "lt", "le", "ge", "ne",
             "and", "or", "not",
             "run", "repeat", "stop", "if", "wait",
             "output",
@@ -123,6 +123,12 @@ public class OperationUtil {
                 return new OpGt();
             case "lt":
                 return new OpLt();
+            case "le":
+                return new OpLe();
+            case "ge":
+                return new OpGe();
+            case "ne":
+                return new OpNe();
 
             // Logic operation
             case "and":
@@ -211,6 +217,26 @@ public class OperationUtil {
                 return new OpDiv();
             case '%':
                 return new OpMod();
+            default:
+                // Impossible
+                throw new UnsupportedOperationException();
+        }
+    }
+
+    static public ComparisonOperation getComparisonOperation(String s) throws UnsupportedOperationException {
+        switch (s) {
+            case "<":
+                return new OpLt();
+            case ">":
+                return new OpGt();
+            case "=":
+                return new OpEq();
+            case "<=":
+                return new OpLe();
+            case ">=":
+                return new OpGe();
+            case "!=":
+                return new OpNe();
             default:
                 // Impossible
                 throw new UnsupportedOperationException();

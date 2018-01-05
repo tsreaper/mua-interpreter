@@ -1,8 +1,8 @@
 import org.junit.jupiter.api.Test;
 
-class RepeatTest extends MuaTest {
-    RepeatTest() {
-        DIRECTORY = "repeat/";
+class ControlTest extends MuaTest {
+    ControlTest() {
+        DIRECTORY = "control/";
     }
 
     @Test

@@ -6,6 +6,7 @@ import interpreter.MuaRunner;
 import interpreter.Tokenizer;
 import lang.operation.OperationUtil;
 import lang.operation.arithmetic.ArithmeticOperation;
+import lang.operation.comparison.ComparisonOperation;
 
 import java.util.ArrayList;
 
@@ -68,12 +69,18 @@ public class MuaExpression extends MuaElement {
         }
         checkExpression(exp);
 
-        // Find +-*/%
         MuaElement result;
+        // Find <, >, =, <=, >=, !=
+        result = findComparison(exp);
+        if (result != null) {
+            return result;
+        }
+        // Find +, -
         result = findOperation("+-", exp, true);
         if (result != null) {
             return result;
         }
+        // Find *, /, %
         result = findOperation("*/%", exp, false);
         if (result != null) {
             return result;
@@ -91,6 +98,75 @@ public class MuaExpression extends MuaElement {
             throw new InvalidExpressionException("Too many return values.");
         }
         return runnerResult.get(0);
+    }
+
+    private MuaBool findComparison(String exp) throws MuaException {
+        ArrayList<String> ops = new ArrayList<>();
+        ArrayList<MuaElement> operands = new ArrayList<>();
+
+        int count = 0, last = 0;
+        for (int i = 0; i < exp.length(); i++) {
+            if (exp.charAt(i) == '(') {
+                count++;
+            } else if (exp.charAt(i) == ')') {
+                count--;
+            } else if (count == 0) {
+                boolean split = false;
+
+                // <=, >=, !=
+                if (i < exp.length() - 1 && exp.charAt(i + 1) == '=') {
+                    if (exp.charAt(i) == '<') {
+                        ops.add("<=");
+                        split = true;
+                    } else if (exp.charAt(i) == '>') {
+                        ops.add(">=");
+                        split = true;
+                    } else if (exp.charAt(i) == '!') {
+                        ops.add("!=");
+                        split = true;
+                    }
+                    if (split) {
+                        operands.add(calcExpression(exp.substring(last, i)));
+                        last = i + 2;
+                        i++;
+                        continue;
+                    }
+                }
+
+                // <, >, =
+                if (exp.charAt(i) == '<') {
+                    ops.add("<");
+                    split = true;
+                } else if (exp.charAt(i) == '>') {
+                    ops.add(">");
+                    split = true;
+                } else if (exp.charAt(i) == '=') {
+                    ops.add("=");
+                    split = true;
+                }
+                if (split) {
+                    operands.add(calcExpression(exp.substring(last, i)));
+                    last = i + 1;
+                }
+            }
+        }
+
+        // No comparison found
+        if (ops.size() == 0) {
+            return null;
+        }
+
+        // Comparison found
+        operands.add(calcExpression(exp.substring(last, exp.length())));
+        for (int i = 0; i < ops.size(); i++) {
+            ComparisonOperation op = OperationUtil.getComparisonOperation(ops.get(i));
+            op.addOperand(operands.get(i));
+            op.addOperand(operands.get(i + 1));
+            if (op.execute().getValue().equals("false")) {
+                return new MuaBool(false);
+            }
+        }
+        return new MuaBool(true);
     }
 
     private MuaElement findOperation(String ops, String exp, boolean canBeUnary) throws MuaException {
@@ -140,9 +216,18 @@ public class MuaExpression extends MuaElement {
     }
 
     private void checkExpression(String exp) throws InvalidExpressionException {
-        // Can't start with */%
-        if (exp.charAt(0) == '*' || exp.charAt(0) == '/' || exp.charAt(0) == '%') {
-            throw new InvalidExpressionException("*/% are not unary operators.");
+        // Can't start with */%<>=
+        final String INVALID_START = "*/%<>=";
+        if (INVALID_START.indexOf(exp.charAt(0)) >= 0) {
+            throw new InvalidExpressionException("`" + exp.charAt(0) + "` is not a unary operator.");
+        }
+
+        // Can't end with +-*/%<>=
+        final String INVALID_END = "+-*/%<>=";
+        if (INVALID_END.indexOf(exp.charAt(exp.length() - 1)) >= 0) {
+            throw new InvalidExpressionException(
+                    "Expression can't end with operator `" + exp.charAt(exp.length() - 1) + "`."
+            );
         }
 
         // Check if brackets are matched
