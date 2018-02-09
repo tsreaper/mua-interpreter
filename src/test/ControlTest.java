@@ -26,6 +26,11 @@ class ControlTest extends MuaTest {
     }
 
     @Test
+    void StopRepeatInIf() {
+        strcmpTest("StopRepeatInIf");
+    }
+
+    @Test
     void OperandNumberExceptionRepeat() {
         strcmpTest("OperandNumberExceptionRepeat");
     }

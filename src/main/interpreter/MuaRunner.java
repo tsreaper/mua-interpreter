@@ -5,6 +5,7 @@ import lang.element.MuaElement;
 import lang.element.MuaOperation;
 import lang.operation.ICanExecute;
 import lang.operation.OperationUtil;
+import lang.operation.control.OpIf;
 import lang.operation.control.OpStop;
 
 import java.util.ArrayList;
@@ -32,6 +33,10 @@ public class MuaRunner {
 
     public boolean shouldStop() {
         return shouldStop;
+    }
+
+    public void stop() {
+        shouldStop = true;
     }
 
     public void clear() {
@@ -64,10 +69,15 @@ public class MuaRunner {
                 stack.add(element);
             }
 
+            ICanExecute op = stack.get(stack.size() - 1);
             // Check for `stop` operation
-            if (stack.get(stack.size() - 1) instanceof OpStop) {
+            if (op instanceof OpStop) {
                 shouldStop = true;
                 break;
+            }
+            // Check for `if` operation
+            if (op instanceof OpIf) {
+                ((OpIf) op).setParentRunner(this);
             }
 
             // Run operations in stack
@@ -82,6 +92,9 @@ public class MuaRunner {
                 if (result != null && interactive) {
                     // Print result if needed
                     System.out.println(result.getValue());
+                }
+                if (shouldStop) {
+                    break;
                 }
             }
         }

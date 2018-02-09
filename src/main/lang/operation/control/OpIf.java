@@ -1,14 +1,26 @@
 package lang.operation.control;
 
+import interpreter.MuaRunner;
 import lang.element.MuaElement;
-import lang.element.MuaNumber;
+import lang.element.MuaList;
 import lang.operation.Operation;
+import service.GlobalSettings;
 
 public class OpIf extends Operation {
+    private MuaRunner runner;
+    private MuaRunner parentRunner;
+
     public OpIf() {
         super();
         operandNum = 3;
         name = "if";
+
+        runner = new MuaRunner(false, GlobalSettings.interactive);
+        parentRunner = null;
+    }
+
+    public void setParentRunner(MuaRunner runner) {
+        parentRunner = runner;
     }
 
     @Override
@@ -16,17 +28,23 @@ public class OpIf extends Operation {
         checkOperandNum();
 
         MuaElement a = getOperand(0, "bool");
-        MuaElement b = getOperand(1, "list");
-        MuaElement c = getOperand(2, "list");
+        MuaList b = (MuaList) getOperand(1, "list");
+        MuaList c = (MuaList) getOperand(2, "list");
 
-        OpRepeat repeat = new OpRepeat();
-        repeat.addOperand(new MuaNumber("1"));
         if (Boolean.valueOf(a.getValue())) {
-            repeat.addOperand(b);
+            for (int i = 0; i < b.size(); i++) {
+                runner.add(b.get(i));
+            }
         } else {
-            repeat.addOperand(c);
+            for (int i = 0; i < c.size(); i++) {
+                runner.add(c.get(i));
+            }
         }
-        repeat.execute();
+        runner.run();
+
+        if (runner.shouldStop()) {
+            parentRunner.stop();
+        }
 
         return null;
     }
